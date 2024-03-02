@@ -152,7 +152,6 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   String userInput = "";
   String result = "0";
-  private boolean shouldCalculate = false;
 
   List<String> buttonList = [
     '7',
@@ -330,7 +329,7 @@ class _CalculatorState extends State<Calculator> {
       if(userInput.isEmpty) {
         userInput = result + text;
         result = "";
-        return null;
+        return;
       }
     }
 
