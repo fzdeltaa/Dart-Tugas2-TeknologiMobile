@@ -13,13 +13,13 @@ A few resources to get you started if this is your first Flutter project:
 
 ## ScreenShot
 Login Page
-<img src="https://github.com/fzdeltaa/Dart-Tugas2-TeknologiMobile/assets/94420820/390ae295-ec50-4a44-b457-36b406b95208" width="150" height="280">
+<img src="https://github.com/fzdeltaa/Dart-Tugas2-TeknologiMobile/assets/94420820/390ae295-ec50-4a44-b457-36b406b95208" width=50% height=50%>
 
 Register Page
-![image](https://github.com/fzdeltaa/Dart-Tugas2-TeknologiMobile/assets/94420820/c6263c6e-c1d9-46ec-8b05-7238076f7135)
+<img src="https://github.com/fzdeltaa/Dart-Tugas2-TeknologiMobile/assets/94420820/c6263c6e-c1d9-46ec-8b05-7238076f7135" width=50% height=50%>
 
 Reset Password Page
-![image](https://github.com/fzdeltaa/Dart-Tugas2-TeknologiMobile/assets/94420820/51ce75eb-d02f-4215-a4f9-fb78b25b74a2)
+<img src="https://github.com/fzdeltaa/Dart-Tugas2-TeknologiMobile/assets/94420820/51ce75eb-d02f-4215-a4f9-fb78b25b74a2" width=50% height=50%>
 
 HomePage
 ![Screen_recording_20240303_014026-ezgif com-speed](https://github.com/fzdeltaa/Dart-Tugas2-TeknologiMobile/assets/94420820/2f16595c-82b3-44be-a7ca-ea260e7922ce)
