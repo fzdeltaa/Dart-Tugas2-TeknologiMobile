@@ -299,7 +299,7 @@ class _CalculatorState extends State<Calculator> {
 
     if (text == "=") {
       result = calculate();
-      userInput = "";
+      userInput = result;
       if(userInput.endsWith(".0")) {
         userInput = userInput.replaceAll(".0", "");
       }
@@ -325,13 +325,6 @@ class _CalculatorState extends State<Calculator> {
       return;
     }
 
-    if ((text == "+" || text == "-") && !result.isEmpty) {
-      if(userInput.isEmpty) {
-        userInput = result + text;
-        result = "";
-        return;
-      }
-    }
 
     if (userInput.isNotEmpty && operators.contains(text) && operators.contains(userInput[userInput.length - 1])) {
       userInput = userInput.substring(0, userInput.length - 1) + text;
