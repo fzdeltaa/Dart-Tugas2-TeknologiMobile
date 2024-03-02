@@ -157,7 +157,7 @@ class _CalculatorState extends State<Calculator> {
     '7',
     '8',
     '9',
-    'DEL',
+    'AC',
     '4',
     '5',
     '6',
@@ -166,9 +166,9 @@ class _CalculatorState extends State<Calculator> {
     '2',
     '3',
     '-',
-    'AC',
+    'DEL',
     '0',
-    'Even/Odd',
+    'GANJIL/GENAP',
     '=',
   ];
 
@@ -234,30 +234,24 @@ class _CalculatorState extends State<Calculator> {
 
   Widget customButton(String text) {
     return InkWell(
-      splashColor: const Color(0xFF1d2630),
       onTap: () {
         setState(() {
           handleButtons(text);
         });
       },
+      splashColor: Colors.transparent,
       child: Ink(
         decoration: BoxDecoration(
-            color: getBgColor(text),
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white.withOpacity(0.1),
-                blurRadius: 4,
-                spreadRadius: 0.5,
-                offset: const Offset(-3, -3),
-              )
-            ]),
+          color: getBgColor(text),
+          shape: BoxShape.circle,
+        ),
         child: Center(
           child: Text(
             text,
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: getColor(text),
-              fontSize: 30,
+              fontSize: getSizefont(text),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -268,16 +262,32 @@ class _CalculatorState extends State<Calculator> {
 
   getColor(String text) {
     if (text == "*" || text == "+" || text == "-") {
-      return const Color.fromARGB(255, 252, 100, 100);
+      return const Color.fromARGB(255, 237, 163, 2);
+    }
+    if (text == "AC") {
+      return const Color.fromARGB(255, 237, 163, 2);
     }
     return Colors.white;
   }
 
   getBgColor(String text) {
-    if (text == "AC" || text == "=" || text == "DEL") {
-      return const Color.fromARGB(255, 252, 100, 100);
+    if (text == "*" || text == "+" || text == "-") {
+      return const Color.fromARGB(255, 0, 68, 255);
     }
-    return const Color(0xFF1d2630);
+    if (text == "DEL" || text == "=" || text == "GANJIL/GENAP") {
+      return const Color.fromARGB(255, 61, 61, 61);
+    }
+    if (text == "AC") {
+      return const Color.fromARGB(255, 255, 255, 255);
+    }
+    return const Color.fromARGB(255, 125, 125, 125);
+  }
+
+  getSizefont(String text){
+    if(text == "GANJIL/GENAP"){
+      return 18.0;
+    }
+    return 30.0;
   }
 
   handleButtons(String text) {
@@ -311,7 +321,7 @@ class _CalculatorState extends State<Calculator> {
       return;
     }
 
-    if (text == "Even/Odd") {
+    if (text == "GANJIL/GENAP") {
       result = isEven();
       userInput = "";
       if(userInput.endsWith(".0")) {
@@ -324,7 +334,6 @@ class _CalculatorState extends State<Calculator> {
       }
       return;
     }
-
 
     if (userInput.isNotEmpty && operators.contains(text) && operators.contains(userInput[userInput.length - 1])) {
       userInput = userInput.substring(0, userInput.length - 1) + text;
