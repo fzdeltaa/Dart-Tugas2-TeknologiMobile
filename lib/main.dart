@@ -1,4 +1,3 @@
-import 'package:andro_teori_modul4/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
 
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginPage(), // Pastikan kamu memiliki LoginPage atau ganti dengan halaman awal yang kamu inginkan
+      home: const LoginPage(),
       // home: Calculator(),
     );
   }
