@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:animate_do/animate_do.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,10 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'M4 Application',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
@@ -51,15 +50,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     List<Widget> widgetOptions = <Widget>[
       const DataKelompokPage(),
-      const PenjumlahanPage(),
-      const PenguranganPage(),
-      const GanjilGenapPage(),
-      Calculator(),
+      const Calculator(),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -70,22 +65,24 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+    bottomNavigationBar: ClipRRect(
+    borderRadius: const BorderRadius.only(
+    topLeft: Radius.circular(40.0),
+    topRight: Radius.circular(40.0),
+    ),
+      child: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Kelompok'),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Tambah'),
-          BottomNavigationBarItem(icon: Icon(Icons.remove), label: 'Kurang'),
+          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'KELOMPOK'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.check_circle_outline), label: 'Ganjil/Genap'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.remove), label: 'Ganjil/Genap'),
+              icon: Icon(Icons.calculate), label: 'KALKULATOR'),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.deepPurple[800],
-        unselectedItemColor: Colors.blueGrey[800],
-        backgroundColor: Colors.deepPurple[800],
+        selectedItemColor: Colors.blue.shade200,
+        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.blue.shade900,
         onTap: _onItemTapped,
       ),
+    ),
     );
   }
 }
@@ -95,217 +92,50 @@ class DataKelompokPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Text(
-          'Anggota Kelompok:\n1. 123210100 - Yeheskiel Pambuko Aji\n2. 123210111 - Faza Denandra\n3. 123210164 - Muhammad Aditya Nugraha',
-          style: TextStyle(fontSize: 18, height: 1.5),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  }
-}
-
-class PenjumlahanPage extends StatefulWidget {
-  const PenjumlahanPage({super.key});
-
-  @override
-  _PenjumlahanPageState createState() => _PenjumlahanPageState();
-}
-
-class _PenjumlahanPageState extends State<PenjumlahanPage> {
-  final TextEditingController _num1Controller = TextEditingController();
-  final TextEditingController _num2Controller = TextEditingController();
-  double _result = 0;
-
-  void _calculateSum() {
-    final String num1Text = _num1Controller.text;
-    final String num2Text = _num2Controller.text;
-
-    if (_isValidNumber(num1Text) && _isValidNumber(num2Text)) {
-      final double num1 = double.parse(num1Text);
-      final double num2 = double.parse(num2Text);
-      setState(() {
-        _result = num1 + num2;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Invalid input. Please enter valid numbers.')),
-      );
-    }
-  }
-
-  bool _isValidNumber(String input) {
-    return double.tryParse(input) != null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _num1Controller,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(labelText: 'Angka Pertama'),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _num2Controller,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(labelText: 'Angka Kedua'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _calculateSum,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple, // background
-                minimumSize: const Size.fromHeight(50), // Set height
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const SizedBox(height: 150),
+            FadeInUp(
+              duration: const Duration(milliseconds: 1000),
+              child: const Text(
+                "Tugas Pemrograman Mobile",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              child:
-                  const Text('Hitung', style: TextStyle(color: Colors.white)),
             ),
-            const SizedBox(height: 16),
-            Text('Hasil: $_result', style: const TextStyle(fontSize: 20)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PenguranganPage extends StatefulWidget {
-  const PenguranganPage({super.key});
-
-  @override
-  _PenguranganPageState createState() => _PenguranganPageState();
-}
-
-class _PenguranganPageState extends State<PenguranganPage> {
-  final TextEditingController _num1Controller = TextEditingController();
-  final TextEditingController _num2Controller = TextEditingController();
-  double _result = 0;
-
-  void _calculateDifference() {
-    final String num1Text = _num1Controller.text;
-    final String num2Text = _num2Controller.text;
-
-    if (_isValidNumber(num1Text) && _isValidNumber(num2Text)) {
-      final double num1 = double.parse(num1Text);
-      final double num2 = double.parse(num2Text);
-      setState(() {
-        _result = num1 - num2;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Invalid input. Please enter valid numbers.')),
-      );
-    }
-  }
-
-  bool _isValidNumber(String input) {
-    return double.tryParse(input) != null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _num1Controller,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(labelText: 'Angka Pertama'),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            controller: _num2Controller,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(labelText: 'Angka Kedua'),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _calculateDifference,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepPurple,
-              minimumSize: Size.fromHeight(50), // Set height
-            ),
-            child: const Text('Kurangi', style: TextStyle(color: Colors.white)),
-          ),
-          const SizedBox(height: 20),
-          Text('Hasil: $_result', style: const TextStyle(fontSize: 20)),
-        ],
-      ),
-    );
-  }
-}
-
-class GanjilGenapPage extends StatefulWidget {
-  const GanjilGenapPage({super.key});
-
-  @override
-  _GanjilGenapPageState createState() => _GanjilGenapPageState();
-}
-
-class _GanjilGenapPageState extends State<GanjilGenapPage> {
-  final TextEditingController _numController = TextEditingController();
-  String _result = "";
-
-  void _checkNumber() {
-    final String numText = _numController.text;
-
-    if (_isValidNumber(numText)) {
-      final int num = int.parse(numText);
-      setState(() {
-        _result = (num % 2 == 0) ? "Genap" : "Ganjil";
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Invalid input. Please enter a valid number.')),
-      );
-    }
-  }
-
-  bool _isValidNumber(String input) {
-    return int.tryParse(input) != null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _numController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Masukkan Angka'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _checkNumber,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
-                minimumSize: Size.fromHeight(50), // Set height
+            const SizedBox(height: 100),
+            FadeInUp(
+              duration: const Duration(milliseconds: 1000),
+            child: const Text(
+              'Anggota Kelompok:',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
-              child: const Text('Periksa', style: TextStyle(color: Colors.white)),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
-            Text('Hasil: $_result', style: const TextStyle(fontSize: 20)),
+            ),
+            const SizedBox(height: 10),
+            FadeInUp(
+              duration: const Duration(milliseconds: 1000),
+            child: const Text(
+                  '1. 123210100 - Yeheskiel Pambuko Aji\n'
+                  '2. 123210111 - Faza Denandra\n'
+                  '3. 123210164 - Muhammad Aditya Nugraha',
+              style: TextStyle(
+                fontSize: 18,
+                height: 1.5,
+              ),
+              textAlign: TextAlign.justify,
+            ),
+            ),
           ],
         ),
       ),
@@ -327,7 +157,7 @@ class _CalculatorState extends State<Calculator> {
     '7',
     '8',
     '9',
-    'DEL',
+    'AC',
     '4',
     '5',
     '6',
@@ -336,50 +166,51 @@ class _CalculatorState extends State<Calculator> {
     '2',
     '3',
     '-',
-    'AC',
+    'DEL',
     '0',
-    'Even/Odd',
+    'GANJIL/GENAP',
     '=',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height / 3,
+            height: MediaQuery.of(context).size.height * 0.35,
             child: Column(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    userInput,
-                    style: const TextStyle(
-                      fontSize: 32,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    result,
-                    style: const TextStyle(
-                      fontSize: 48,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    alignment: Alignment.centerRight,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          userInput.isEmpty ? "" : userInput,
+                          style: const TextStyle(
+                            fontSize: 32,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          result.isEmpty ? (userInput.isEmpty ? "0" : calculate()) : result,
+                          style: const TextStyle(
+                            fontSize: 100,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const Divider(color: Colors.white),
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(10),
@@ -403,33 +234,27 @@ class _CalculatorState extends State<Calculator> {
 
   Widget customButton(String text) {
     return InkWell(
-      splashColor: const Color(0xFF1d2630),
       onTap: () {
         setState(() {
           handleButtons(text);
         });
       },
+      splashColor: Colors.transparent,
       child: Ink(
         decoration: BoxDecoration(
-            color: getBgColor(text),
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white.withOpacity(0.1),
-                blurRadius: 4,
-                spreadRadius: 0.5,
-                offset: const Offset(-3, -3),
-              )
-            ]),
+          color: getBgColor(text),
+          shape: BoxShape.circle,
+        ),
         child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              color: getColor(text),
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: getColor(text),
+                fontSize: getSizefont(text),
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
         ),
       ),
     );
@@ -437,16 +262,32 @@ class _CalculatorState extends State<Calculator> {
 
   getColor(String text) {
     if (text == "*" || text == "+" || text == "-") {
-      return const Color.fromARGB(255, 252, 100, 100);
+      return const Color.fromARGB(255, 237, 163, 2);
+    }
+    if (text == "AC") {
+      return const Color.fromARGB(255, 237, 163, 2);
     }
     return Colors.white;
   }
 
   getBgColor(String text) {
-    if (text == "AC" || text == "=" || text == "DEL") {
-      return const Color.fromARGB(255, 252, 100, 100);
+    if (text == "*" || text == "+" || text == "-") {
+      return const Color.fromARGB(255, 0, 68, 255);
     }
-    return const Color(0xFF1d2630);
+    if (text == "DEL" || text == "=" || text == "GANJIL/GENAP") {
+      return const Color.fromARGB(255, 61, 61, 61);
+    }
+    if (text == "AC") {
+      return const Color.fromARGB(255, 255, 255, 255);
+    }
+    return const Color.fromARGB(255, 125, 125, 125);
+  }
+
+  getSizefont(String text){
+    if(text == "GANJIL/GENAP"){
+      return 18.0;
+    }
+    return 30.0;
   }
 
   handleButtons(String text) {
@@ -466,33 +307,51 @@ class _CalculatorState extends State<Calculator> {
     }
 
     if (text == "=") {
-      result = calculate();
-      userInput = result;
-      if(userInput.endsWith(".0")) {
+      if (result.isNotEmpty) {
+        result = calculate();
+        userInput = "$userInput = ${calculate()}";
+      }
+      if (result == "GANJIL" || result == "GENAP" || result == "Error") {
+        userInput = "";
+        userInput = "Error";
+      }
+      if (userInput.endsWith(".0")) {
         userInput = userInput.replaceAll(".0", "");
       }
-
-      if(result.endsWith(".0")) {
+      if (result.endsWith(".0")) {
         result = result.replaceAll(".0", "");
-
       }
       return;
     }
 
-    if (text == "Even/Odd") {
+    if (text == "GANJIL/GENAP") {
       result = isEven();
       userInput = "";
       if(userInput.endsWith(".0")) {
         userInput = userInput.replaceAll(".0", "");
       }
-
       if(result.endsWith(".0")) {
         result = result.replaceAll(".0", "");
-
       }
       return;
     }
-    userInput = userInput + text;
+
+    if (["+","-"].contains(text) && result != "0" && result != "Error") {
+      userInput = result + text;
+      result = "0";
+      return;
+    }
+
+    if (["+","-","*","/"].contains(text) && userInput.isNotEmpty && "+-*/".contains(userInput.substring(userInput.length - 1))) {
+      userInput = userInput.substring(0, userInput.length - 1) + text;
+    } else {
+      if (result != "0") {
+        userInput = text;
+        result = "0";
+      } else {
+        userInput += text;
+      }
+    }
   }
 
   String calculate() {
@@ -507,12 +366,11 @@ class _CalculatorState extends State<Calculator> {
 
   String isEven() {
     try {
-      var exp = Parser().parse(userInput);
-      var evaluation = exp.evaluate(EvaluationType.REAL, ContextModel());
-      if (evaluation % 2 == 0) {
-        return "Genap";
+      var calculatedValue = double.tryParse(calculate());
+      if (calculatedValue != null && calculatedValue % 2 == 0) {
+        return "GENAP";
       } else {
-        return "Ganjil";
+        return "GANJIL";
       }
     } catch(e) {
       return "Error";
