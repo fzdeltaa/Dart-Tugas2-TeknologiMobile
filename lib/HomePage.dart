@@ -152,12 +152,13 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   String userInput = "";
   String result = "0";
+  private boolean shouldCalculate = false;
 
   List<String> buttonList = [
     '7',
     '8',
     '9',
-    'AC',
+    'DEL',
     '4',
     '5',
     '6',
@@ -166,9 +167,9 @@ class _CalculatorState extends State<Calculator> {
     '2',
     '3',
     '-',
-    'DEL',
+    'AC',
     '0',
-    'GANJIL/GENAP',
+    'Even/Odd',
     '=',
   ];
 
@@ -234,27 +235,33 @@ class _CalculatorState extends State<Calculator> {
 
   Widget customButton(String text) {
     return InkWell(
+      splashColor: const Color(0xFF1d2630),
       onTap: () {
         setState(() {
           handleButtons(text);
         });
       },
-      splashColor: Colors.transparent,
       child: Ink(
         decoration: BoxDecoration(
-          color: getBgColor(text),
-          shape: BoxShape.circle,
-        ),
+            color: getBgColor(text),
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.1),
+                blurRadius: 4,
+                spreadRadius: 0.5,
+                offset: const Offset(-3, -3),
+              )
+            ]),
         child: Center(
-            child: Text(
-              text,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: getColor(text),
-                fontSize: getSizefont(text),
-                fontWeight: FontWeight.bold,
-              ),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: getColor(text),
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
             ),
+          ),
         ),
       ),
     );
@@ -262,35 +269,20 @@ class _CalculatorState extends State<Calculator> {
 
   getColor(String text) {
     if (text == "*" || text == "+" || text == "-") {
-      return const Color.fromARGB(255, 237, 163, 2);
-    }
-    if (text == "AC") {
-      return const Color.fromARGB(255, 237, 163, 2);
+      return const Color.fromARGB(255, 252, 100, 100);
     }
     return Colors.white;
   }
 
   getBgColor(String text) {
-    if (text == "*" || text == "+" || text == "-") {
-      return const Color.fromARGB(255, 0, 68, 255);
+    if (text == "AC" || text == "=" || text == "DEL") {
+      return const Color.fromARGB(255, 252, 100, 100);
     }
-    if (text == "DEL" || text == "=" || text == "GANJIL/GENAP") {
-      return const Color.fromARGB(255, 61, 61, 61);
-    }
-    if (text == "AC") {
-      return const Color.fromARGB(255, 255, 255, 255);
-    }
-    return const Color.fromARGB(255, 125, 125, 125);
-  }
-
-  getSizefont(String text){
-    if(text == "GANJIL/GENAP"){
-      return 18.0;
-    }
-    return 30.0;
+    return const Color(0xFF1d2630);
   }
 
   handleButtons(String text) {
+    List<String> operators = ['+', '-', '*', '/'];
     if (text == "AC") {
       userInput = "";
       result = "0";
@@ -307,51 +299,46 @@ class _CalculatorState extends State<Calculator> {
     }
 
     if (text == "=") {
-      if (result.isNotEmpty) {
-        result = calculate();
-        userInput = "$userInput = ${calculate()}";
-      }
-      if (result == "GANJIL" || result == "GENAP" || result == "Error") {
-        userInput = "";
-        userInput = "Error";
-      }
-      if (userInput.endsWith(".0")) {
+      result = calculate();
+      userInput = "";
+      if(userInput.endsWith(".0")) {
         userInput = userInput.replaceAll(".0", "");
       }
-      if (result.endsWith(".0")) {
+
+      if(result.endsWith(".0")) {
         result = result.replaceAll(".0", "");
+
       }
       return;
     }
 
-    if (text == "GANJIL/GENAP") {
+    if (text == "Even/Odd") {
       result = isEven();
       userInput = "";
       if(userInput.endsWith(".0")) {
         userInput = userInput.replaceAll(".0", "");
       }
+
       if(result.endsWith(".0")) {
         result = result.replaceAll(".0", "");
+
       }
       return;
     }
 
-    if (["+","-"].contains(text) && result != "0" && result != "Error") {
-      userInput = result + text;
-      result = "0";
-      return;
+    if ((text == "+" || text == "-") && !result.isEmpty) {
+      if(userInput.isEmpty) {
+        userInput = result + text;
+        result = "";
+        return null;
+      }
     }
 
-    if (["+","-","*","/"].contains(text) && userInput.isNotEmpty && "+-*/".contains(userInput.substring(userInput.length - 1))) {
+    if (userInput.isNotEmpty && operators.contains(text) && operators.contains(userInput[userInput.length - 1])) {
       userInput = userInput.substring(0, userInput.length - 1) + text;
-    } else {
-      if (result != "0") {
-        userInput = text;
-        result = "0";
-      } else {
-        userInput += text;
-      }
+      return;
     }
+    userInput += text;
   }
 
   String calculate() {
@@ -366,11 +353,12 @@ class _CalculatorState extends State<Calculator> {
 
   String isEven() {
     try {
-      var calculatedValue = double.tryParse(calculate());
-      if (calculatedValue != null && calculatedValue % 2 == 0) {
-        return "GENAP";
+      var exp = Parser().parse(result);
+      var evaluation = exp.evaluate(EvaluationType.REAL, ContextModel());
+      if (evaluation % 2 == 0) {
+        return "Genap";
       } else {
-        return "GANJIL";
+        return "Ganjil";
       }
     } catch(e) {
       return "Error";
