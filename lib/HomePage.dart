@@ -77,8 +77,8 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.calculate), label: 'KALKULATOR'),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue.shade200,
-        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.blue.shade200,
         backgroundColor: Colors.blue.shade900,
         onTap: _onItemTapped,
       ),
@@ -191,15 +191,15 @@ class _CalculatorState extends State<Calculator> {
                       children: [
                         Text(
                           userInput.isEmpty ? "" : userInput,
-                          style: const TextStyle(
-                            fontSize: 32,
+                          style:TextStyle(
+                            fontSize: userInput.length > 20 ? 20 : 32,
                             color: Colors.black,
                           ),
                         ),
                         Text(
                           result.isEmpty ? (userInput.isEmpty ? "0" : calculate()) : result,
-                          style: const TextStyle(
-                            fontSize: 100,
+                          style: TextStyle(
+                            fontSize:_calculateFontSize(result.length),
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
@@ -230,6 +230,16 @@ class _CalculatorState extends State<Calculator> {
         ],
       ),
     );
+  }
+
+  double _calculateFontSize(int textLength) {
+    if (textLength > 20) {
+      return 50;
+    } else if (textLength > 6) {
+      return 70;
+    } else {
+      return 100;
+    }
   }
 
   Widget customButton(String text) {
