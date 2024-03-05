@@ -324,32 +324,12 @@ class _CalculatorState extends State<Calculator> {
 
     if (text == "=") {
       result = calculate();
-      if (result == "Error") {
-        userInput = "";
-      } else {
-        userInput = result;
-      }
-      if (userInput.endsWith(".0")) {
-        userInput = userInput.replaceAll(".0", "");
-      }
-
-      if (result.endsWith(".0")) {
-        result = result.replaceAll(".0", "");
-      }
       return;
     }
 
     if (text == "GANJIL/GENAP") {
       result = isEven();
       userInput = "";
-      // if(userInput.endsWith(".0")) {
-      //   userInput = userInput.replaceAll(".0", "");
-      // }
-      //
-      // if(result.endsWith(".0")) {
-      //   result = result.replaceAll(".0", "");
-      //
-      // }
       return;
     }
 
@@ -369,8 +349,9 @@ class _CalculatorState extends State<Calculator> {
       evaluation = evaluation.toStringAsFixed(0);
       if (evaluation.length > 16) {
         userInput = "";
-        return "Result too Long";
+        return "Result too long";
       }
+      userInput = evaluation;
       return evaluation;
     } catch (e) {
       userInput = "";
@@ -384,7 +365,7 @@ class _CalculatorState extends State<Calculator> {
       var evaluation = exp.evaluate(EvaluationType.REAL, ContextModel());
       if (evaluation.toStringAsFixed(0).length > 16) {
         userInput = "";
-        return "Input too Long";
+        return "Input too long";
       }
 
       if (evaluation == 0) {
