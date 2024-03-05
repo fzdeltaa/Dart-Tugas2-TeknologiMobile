@@ -378,7 +378,7 @@ class _CalculatorState extends State<Calculator> {
       var evaluation = exp.evaluate(EvaluationType.REAL, ContextModel());
       if (evaluation.toStringAsFixed(0).length > 16) {
         userInput = "";
-        return "Result too Long";
+        return "Input too Long";
       }
 
       if(evaluation == 0) {
