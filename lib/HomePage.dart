@@ -233,7 +233,7 @@ class _CalculatorState extends State<Calculator> {
   }
 
   double _calculateFontSize(int textLength) {
-    if (textLength > 20) {
+    if (textLength > 15) {
       return 50;
     } else if (textLength > 6) {
       return 70;
@@ -364,9 +364,11 @@ class _CalculatorState extends State<Calculator> {
 
   String isEven() {
     try {
-      var exp = Parser().parse(result);
+      var exp = Parser().parse(userInput);
       var evaluation = exp.evaluate(EvaluationType.REAL, ContextModel());
-      if (evaluation % 2 == 0) {
+      if(evaluation == 0) {
+        return "Nol";
+      } else if (evaluation % 2 == 0) {
         return "Genap";
       } else {
         return "Ganjil";
