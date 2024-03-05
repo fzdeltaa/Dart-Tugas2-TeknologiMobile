@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -65,24 +66,24 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: widgetOptions.elementAt(_selectedIndex),
       ),
-    bottomNavigationBar: ClipRRect(
-    borderRadius: const BorderRadius.only(
-    topLeft: Radius.circular(40.0),
-    topRight: Radius.circular(40.0),
-    ),
-      child: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'KELOMPOK'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calculate), label: 'KALKULATOR'),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.blue.shade200,
-        backgroundColor: Colors.blue.shade900,
-        onTap: _onItemTapped,
+      bottomNavigationBar: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(40.0),
+          topRight: Radius.circular(40.0),
+        ),
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.group), label: 'KELOMPOK'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.calculate), label: 'KALKULATOR'),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.blue.shade200,
+          backgroundColor: Colors.blue.shade900,
+          onTap: _onItemTapped,
+        ),
       ),
-    ),
     );
   }
 }
@@ -103,9 +104,10 @@ class DataKelompokPage extends StatelessWidget {
               duration: const Duration(milliseconds: 1000),
               child: const Text(
                 "Tugas Pemrograman Mobile",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.blue,
-                  fontSize: 28,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -113,28 +115,28 @@ class DataKelompokPage extends StatelessWidget {
             const SizedBox(height: 100),
             FadeInUp(
               duration: const Duration(milliseconds: 1000),
-            child: const Text(
-              'Anggota Kelompok:',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+              child: const Text(
+                'Anggota Kelompok:',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
             ),
             const SizedBox(height: 10),
             FadeInUp(
               duration: const Duration(milliseconds: 1000),
-            child: const Text(
-                  '1. 123210100 - Yeheskiel Pambuko Aji\n'
-                  '2. 123210111 - Faza Denandra\n'
-                  '3. 123210164 - Muhammad Aditya Nugraha',
-              style: TextStyle(
-                fontSize: 18,
-                height: 1.5,
+              child: const Text(
+                '1. 123210100 - Yeheskiel Pambuko Aji\n'
+                '2. 123210111 - Faza Denandra\n'
+                '3. 123210164 - Muhammad Aditya Nugraha',
+                style: TextStyle(
+                  fontSize: 16,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.justify,
               ),
-              textAlign: TextAlign.justify,
-            ),
             ),
           ],
         ),
@@ -178,7 +180,7 @@ class _CalculatorState extends State<Calculator> {
       body: Column(
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
+            height: MediaQuery.of(context).size.height * 0.32,
             child: Column(
               children: [
                 Expanded(
@@ -191,15 +193,18 @@ class _CalculatorState extends State<Calculator> {
                       children: [
                         Text(
                           userInput.isEmpty ? "" : userInput,
-                          style:TextStyle(
-                            fontSize: userInput.length > 20 ? 20 : 32,
+                          style: TextStyle(
+                            fontSize: userInput.length > 18 ? 20 : 32,
                             color: Colors.black,
                           ),
                         ),
                         Text(
-                          result.isEmpty ? (userInput.isEmpty ? "0" : calculate()) : result,
+                          result.isEmpty
+                              ? (userInput.isEmpty ? "0" : calculate())
+                              : result,
                           style: TextStyle(
-                            fontSize:_calculateFontSize(result.length),
+                            fontSize: _calculateFontSize(
+                                result.length, userInput.length),
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
@@ -232,11 +237,11 @@ class _CalculatorState extends State<Calculator> {
     );
   }
 
-  double _calculateFontSize(int textLength) {
-    if (textLength > 15) {
-      return 50;
-    } else if (textLength > 6) {
-      return 70;
+  double _calculateFontSize(int resultLength, int userLength) {
+    if (resultLength > 10 || userLength > 30) {
+      return 45;
+    } else if (resultLength > 6 || userLength > 20) {
+      return 60;
     } else {
       return 100;
     }
@@ -293,8 +298,8 @@ class _CalculatorState extends State<Calculator> {
     return const Color.fromARGB(255, 125, 125, 125);
   }
 
-  getSizefont(String text){
-    if(text == "GANJIL/GENAP"){
+  getSizefont(String text) {
+    if (text == "GANJIL/GENAP") {
       return 18.0;
     }
     return 30.0;
@@ -319,18 +324,17 @@ class _CalculatorState extends State<Calculator> {
 
     if (text == "=") {
       result = calculate();
-      if(result=="Error") {
+      if (result == "Error") {
         userInput = "";
       } else {
         userInput = result;
       }
-      if(userInput.endsWith(".0")) {
+      if (userInput.endsWith(".0")) {
         userInput = userInput.replaceAll(".0", "");
       }
 
-      if(result.endsWith(".0")) {
+      if (result.endsWith(".0")) {
         result = result.replaceAll(".0", "");
-
       }
       return;
     }
@@ -349,7 +353,9 @@ class _CalculatorState extends State<Calculator> {
       return;
     }
 
-    if (userInput.isNotEmpty && operators.contains(text) && operators.contains(userInput[userInput.length - 1])) {
+    if (userInput.isNotEmpty &&
+        operators.contains(text) &&
+        operators.contains(userInput[userInput.length - 1])) {
       userInput = userInput.substring(0, userInput.length - 1) + text;
       return;
     }
@@ -366,7 +372,7 @@ class _CalculatorState extends State<Calculator> {
         return "Result too Long";
       }
       return evaluation;
-    } catch(e) {
+    } catch (e) {
       userInput = "";
       return "Error";
     }
@@ -381,14 +387,14 @@ class _CalculatorState extends State<Calculator> {
         return "Input too Long";
       }
 
-      if(evaluation == 0) {
+      if (evaluation == 0) {
         return "Nol";
       } else if (evaluation % 2 == 0) {
         return "Genap";
       } else {
         return "Ganjil";
       }
-    } catch(e) {
+    } catch (e) {
       userInput = "";
       return "Error";
     }
