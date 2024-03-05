@@ -319,7 +319,11 @@ class _CalculatorState extends State<Calculator> {
 
     if (text == "=") {
       result = calculate();
-      userInput = result;
+      if(result=="Error") {
+        userInput = "";
+      } else {
+        userInput = result;
+      }
       if(userInput.endsWith(".0")) {
         userInput = userInput.replaceAll(".0", "");
       }
@@ -334,14 +338,14 @@ class _CalculatorState extends State<Calculator> {
     if (text == "GANJIL/GENAP") {
       result = isEven();
       userInput = "";
-      if(userInput.endsWith(".0")) {
-        userInput = userInput.replaceAll(".0", "");
-      }
-
-      if(result.endsWith(".0")) {
-        result = result.replaceAll(".0", "");
-
-      }
+      // if(userInput.endsWith(".0")) {
+      //   userInput = userInput.replaceAll(".0", "");
+      // }
+      //
+      // if(result.endsWith(".0")) {
+      //   result = result.replaceAll(".0", "");
+      //
+      // }
       return;
     }
 
@@ -356,8 +360,14 @@ class _CalculatorState extends State<Calculator> {
     try {
       var exp = Parser().parse(userInput);
       var evaluation = exp.evaluate(EvaluationType.REAL, ContextModel());
-      return evaluation.toString();
+      evaluation = evaluation.toStringAsFixed(0);
+      if (evaluation.length > 16) {
+        userInput = "";
+        return "Result too Long";
+      }
+      return evaluation;
     } catch(e) {
+      userInput = "";
       return "Error";
     }
   }
@@ -366,6 +376,11 @@ class _CalculatorState extends State<Calculator> {
     try {
       var exp = Parser().parse(userInput);
       var evaluation = exp.evaluate(EvaluationType.REAL, ContextModel());
+      if (evaluation.toStringAsFixed(0).length > 16) {
+        userInput = "";
+        return "Result too Long";
+      }
+
       if(evaluation == 0) {
         return "Nol";
       } else if (evaluation % 2 == 0) {
@@ -374,6 +389,7 @@ class _CalculatorState extends State<Calculator> {
         return "Ganjil";
       }
     } catch(e) {
+      userInput = "";
       return "Error";
     }
   }
